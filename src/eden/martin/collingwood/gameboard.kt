@@ -23,11 +23,11 @@ interface IMutableGameBoard : IGameBoard {
 }
 
 class GameBoard(override val size: Int) : IMutableGameBoard {
-    override fun get(space: Space): IShip? {
-        throw UnsupportedOperationException("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
+    // This is just an empty 2D array - kotlin doesn't have elegant support for this currently
+    private val grid: Array<Array<IShip?>> = Array(size, { arrayOfNulls<IShip?>(size) })
 
+    override fun get(space: Space): IShip? = grid[space.x][space.y]
     override fun put(space: Space, ship: IShip) {
-        throw UnsupportedOperationException("not implemented")
+        grid[space.x][space.y] = ship
     }
 }
