@@ -40,11 +40,16 @@ interface IShip {
 }
 
 class Ship(override val name : String, override val spaces: Iterable<Space>) : IShip {
+    private val remainingSpaces = spaces.toMutableSet()
+
     override val sunk: Boolean
-        get() = throw UnsupportedOperationException("not implemented")
+        get() = remainingSpaces.isEmpty()
 
     override fun hit(space: Space): Boolean {
-        throw UnsupportedOperationException("not implemented")
+        if (space in remainingSpaces) {
+            remainingSpaces.remove(space)
+            return true
+        }
+        return false
     }
-
 }
