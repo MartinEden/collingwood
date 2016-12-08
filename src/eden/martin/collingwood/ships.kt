@@ -13,11 +13,18 @@ interface IShipTemplate {
 
 class ShipTemplate(override val name: String, override val length: Int) : IShipTemplate {
     override fun spacesRequired(orientation: Orientation, origin: Space): Collection<Space> {
-        throw UnsupportedOperationException("not implemented")
+        val vector = Vector(orientation)
+        val spaces = mutableListOf<Space>()
+        var current = origin
+        for (i in 1..length) {
+            spaces.add(current)
+            current = current.plus(vector)
+        }
+        return spaces
     }
 
     override fun makeShip(orientation: Orientation, origin: Space): IShip {
-        throw UnsupportedOperationException("not implemented")
+        return Ship(name, spacesRequired(orientation, origin))
     }
 }
 
