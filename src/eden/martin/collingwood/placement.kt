@@ -6,3 +6,9 @@ package eden.martin.collingwood
 interface IFleetPlacer {
     fun placeShips(fleet: Iterable<IShipTemplate>, board: IMutableGameBoard)
 }
+
+class RandomFleetPlacer : IFleetPlacer {
+    override fun placeShips(fleet: Iterable<IShipTemplate>, board: IMutableGameBoard) {
+        throw UnsupportedOperationException("not implemented")
+    }
+}
