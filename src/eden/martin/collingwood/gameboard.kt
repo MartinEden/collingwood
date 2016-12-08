@@ -21,3 +21,13 @@ interface IGameBoard {
 interface IMutableGameBoard : IGameBoard {
     fun put(space: Space, ship: IShip)
 }
+
+class GameBoard(override val size: Int) : IMutableGameBoard {
+    override fun get(space: Space): IShip? {
+        throw UnsupportedOperationException("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
+    override fun put(space: Space, ship: IShip) {
+        throw UnsupportedOperationException("not implemented")
+    }
+}
