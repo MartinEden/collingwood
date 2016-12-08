@@ -7,7 +7,18 @@ package eden.martin.collingwood
 interface IShipTemplate {
     val name: String
     val length: Int
-    fun makeShip() : IShip
+    fun makeShip(orientation: Orientation, origin: Space): IShip
+    fun spacesRequired(orientation: Orientation, origin: Space): Collection<Space>
+}
+
+class ShipTemplate(override val name: String, override val length: Int) : IShipTemplate {
+    override fun spacesRequired(orientation: Orientation, origin: Space): Collection<Space> {
+        throw UnsupportedOperationException("not implemented")
+    }
+
+    override fun makeShip(orientation: Orientation, origin: Space): IShip {
+        throw UnsupportedOperationException("not implemented")
+    }
 }
 
 /**
@@ -17,5 +28,16 @@ interface IShipTemplate {
 interface IShip {
     val name: String
     val sunk: Boolean
-    fun hit(space: Space)
+    val spaces: Iterable<Space>
+    fun hit(space: Space): Boolean
+}
+
+class Ship(override val name : String, override val spaces: Iterable<Space>) : IShip {
+    override val sunk: Boolean
+        get() = throw UnsupportedOperationException("not implemented")
+
+    override fun hit(space: Space): Boolean {
+        throw UnsupportedOperationException("not implemented")
+    }
+
 }

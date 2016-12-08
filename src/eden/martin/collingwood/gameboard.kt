@@ -1,6 +1,7 @@
 package eden.martin.collingwood
 
 data class Space(val x: Int, val y: Int)
+enum class Orientation { Vertical, Horizontal }
 
 /**
  * An IGameBoard is a square grid of spaces, each of which can contain either a portion of a ship,
