@@ -10,6 +10,7 @@ package eden.martin.collingwood
 interface IGameBoard {
     val size: Int
     fun get(space: Space): IShip?
+    fun allSpaces(): Sequence<Space>
 }
 
 /**
@@ -27,5 +28,17 @@ class GameBoard(override val size: Int) : IMutableGameBoard {
     override fun get(space: Space): IShip? = grid[space.x][space.y]
     override fun put(space: Space, ship: IShip) {
         grid[space.x][space.y] = ship
+    }
+
+    override fun allSpaces(): Sequence<Space> {
+        return generateSequence(Space(0, 0)) {
+            if (it.x < size - 1) {
+                Space(it.x + 1, it.y)
+            } else if (it.y < size - 1) {
+                Space(0, it.y + 1)
+            } else {
+                null
+            }
+        }
     }
 }

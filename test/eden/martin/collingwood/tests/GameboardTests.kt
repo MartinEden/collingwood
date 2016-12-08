@@ -8,14 +8,33 @@ import org.testng.annotations.Test
 import org.mockito.Mockito.*
 import org.testng.Assert
 import org.testng.annotations.DataProvider
+import org.testng.internal.junit.ArrayAsserts
 
 class GameboardTests {
     val size = 4
 
     @Test
+    fun allSpacesReturnsEverySpace() {
+        val board = GameBoard(3)
+        val expectedSpaces = sequenceOf(
+                Space(0, 0),
+                Space(1, 0),
+                Space(2, 0),
+                Space(0, 1),
+                Space(1, 1),
+                Space(2, 1),
+                Space(0, 2),
+                Space(1, 2),
+                Space(2, 2)
+        )
+        ArrayAsserts.assertArrayEquals(expectedSpaces.toList().toTypedArray(),
+                                       board.allSpaces().toList().toTypedArray())
+    }
+
+    @Test
     fun squaresAreEmptyByDefault() {
         val board = GameBoard(size)
-        for (space in allSpaces(size)) {
+        for (space in board.allSpaces()) {
             Assert.assertNull(board.get(space))
         }
     }
@@ -54,7 +73,7 @@ class GameboardTests {
     }
 
     private fun assertBoardIsEmptyExcept(board : IGameBoard, exceptions : Iterable<Space>) {
-        for (space in allSpaces(size).filter { it !in exceptions }) {
+        for (space in board.allSpaces().filter { it !in exceptions }) {
             Assert.assertNull(board.get(space))
         }
     }
