@@ -34,4 +34,13 @@ class ShipTests {
             Assert.assertFalse(ship.hit(space))
         }
     }
+
+    @Test
+    fun cannotHitSpaceTwice() {
+        val ship = Ship("Test", listOf(Space(0, 0), Space(1, 0)))
+        Assert.assertTrue(ship.hit(Space(0, 0)))
+        Assert.assertFalse(ship.hit(Space(0, 0)))
+        Assert.assertTrue(ship.hit(Space(1, 0)))
+        Assert.assertFalse(ship.hit(Space(1, 0)))
+    }
 }
