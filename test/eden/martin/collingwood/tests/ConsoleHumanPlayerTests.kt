@@ -40,6 +40,13 @@ class ConsoleHumanPlayerTests {
     }
 
     @Test
+    fun reportsVictory() {
+        val player = createPlayer()
+        player.inform(VictoryReport())
+        Assert.assertEquals(output.toString().trim(), "All ships destroyed. Victory!")
+    }
+
+    @Test
     fun chooseTargetIsReadFromInput() {
         val player = createPlayer("B3")
         val target = player.chooseTarget(GameBoard(5))

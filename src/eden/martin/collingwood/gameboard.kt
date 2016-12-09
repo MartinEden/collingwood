@@ -9,6 +9,7 @@ package eden.martin.collingwood
  */
 interface IGameBoard {
     val size: Int
+    val hasShips: Boolean
     fun get(space: Space): IShip?
     fun allSpaces(): Sequence<Space>
     fun inBounds(space: Space): Boolean
@@ -30,6 +31,9 @@ class GameBoard(override val size: Int) : IMutableGameBoard {
     override fun put(space: Space, ship: IShip) {
         grid[space.x][space.y] = ship
     }
+
+    override val hasShips: Boolean
+        get() = throw UnsupportedOperationException()
 
     override fun inBounds(space: Space): Boolean {
         return space.x >= 0 && space.x < size

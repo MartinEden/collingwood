@@ -1,21 +1,25 @@
 package eden.martin.collingwood.tests
 
-import eden.martin.collingwood.GameBoard
-import eden.martin.collingwood.IGameBoard
-import eden.martin.collingwood.IShip
-import eden.martin.collingwood.Space
+import eden.martin.collingwood.*
 import org.testng.annotations.Test
-import org.mockito.Mockito.*
+import org.mockito.Mockito.mock
+import org.mockito.Mockito.`when` as mockWhen
 import org.testng.Assert
+import org.testng.annotations.BeforeTest
 import org.testng.annotations.DataProvider
 import org.testng.internal.junit.ArrayAsserts
 
 class GameboardTests {
     val size = 3
+    lateinit var board : IMutableGameBoard
+
+    @BeforeTest
+    fun createBoard() {
+        board = GameBoard(size)
+    }
 
     @Test
     fun allSpacesReturnsEverySpace() {
-        val board = GameBoard(3)
         val expectedSpaces = inBoundsSpaces()
         ArrayAsserts.assertArrayEquals(expectedSpaces.toList().toTypedArray(),
                                        board.allSpaces().toList().toTypedArray())
@@ -23,7 +27,6 @@ class GameboardTests {
 
     @Test
     fun squaresAreEmptyByDefault() {
-        val board = GameBoard(size)
         for (space in board.allSpaces()) {
             Assert.assertNull(board.get(space))
         }
@@ -31,7 +34,6 @@ class GameboardTests {
 
     @Test
     fun canPlaceAndRetrieveShipsFromGameBoard() {
-        val board = GameBoard(size)
         val ship = mock(IShip::class.java)
         val space = Space(2, 1)
         board.put(space, ship)
@@ -41,26 +43,42 @@ class GameboardTests {
 
     @Test(dataProvider = "outOfBounds")
     fun cannotPutShipBeyondRangeOfBoard(space: Space) {
-        val board = GameBoard(size)
         Assert.assertThrows { board.put(space, mock(IShip::class.java)) }
     }
 
     @Test(dataProvider = "outOfBounds")
     fun cannotGetShipBeyondRangeOfBoard(space: Space) {
-        val board = GameBoard(size)
         Assert.assertThrows { board.get(space) }
     }
 
     @Test(dataProvider = "outOfBounds")
     fun inBoundsReturnsFalseForIndicesOutsideOfBounds(space: Space) {
-        val board = GameBoard(size)
         Assert.assertFalse(board.inBounds(space))
     }
 
     @Test(dataProvider = "inBounds")
     fun inBoundsReturnsTrueForIndicesInsideOfBounds(space: Space) {
-        val board = GameBoard(size)
         Assert.assertTrue(board.inBounds(space))
+    }
+
+    @Test
+    fun hasShipsReturnsFalseForEmptyBoard() {
+        Assert.assertFalse(board.hasShips)
+    }
+
+    @Test
+    fun hasShipsReturnsTrueIfShipHasBeenAdded() {
+        val ship = mock(IShip::class.java)
+        board.put(Space(0, 0), ship)
+        Assert.assertTrue(board.hasShips)
+    }
+
+    @Test
+    fun hasShipsReturnsFalseIfAllShipsHaveBeenSunk() {
+        val ship = mock(IShip::class.java)
+        mockWhen(ship.sunk).thenReturn(true)
+        board.put(Space(0, 0), ship)
+        Assert.assertFalse(board.hasShips)
     }
 
     private fun assertBoardIsEmptyExcept(board : IGameBoard, exceptions : Iterable<Space>) {
@@ -70,7 +88,7 @@ class GameboardTests {
     }
 
     @DataProvider(name = "outOfBounds")
-    fun outOfBoundsSpacesDataProvider(): Array<Array<Any>> {
+    fun outOfBoundsSpacesDataPro(): Array<Array<Any>> {
         val spaces = listOf(
                 Space(-1, 0),
                 Space(0, -1),
