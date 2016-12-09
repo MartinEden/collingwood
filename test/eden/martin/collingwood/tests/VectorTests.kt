@@ -23,6 +23,6 @@ class VectorTests {
     fun CanAddVectorToSpace() {
         val vector = Vector(6, 4)
         val space = Space(2, 2)
-        Assert.assertEquals(Space(8, 6), space.plus(vector))
+        Assert.assertEquals(Space(8, 6), space + vector)
     }
 }

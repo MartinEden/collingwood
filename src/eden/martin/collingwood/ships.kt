@@ -18,7 +18,7 @@ class ShipTemplate(override val name: String, override val length: Int) : IShipT
         var current = placement.origin
         for (i in 1..length) {
             spaces.add(current)
-            current = current.plus(vector)
+            current += vector
         }
         return spaces
     }

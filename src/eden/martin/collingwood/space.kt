@@ -1,7 +1,7 @@
 package eden.martin.collingwood
 
 data class Space(val x: Int, val y: Int) {
-    fun plus(vector: Vector) = Space(x + vector.x, y + vector.y)
+    operator fun plus(vector: Vector) = Space(x + vector.x, y + vector.y)
 }
 
 enum class Orientation { Vertical, Horizontal }
