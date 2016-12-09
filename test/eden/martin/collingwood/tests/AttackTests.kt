@@ -3,7 +3,6 @@ package eden.martin.collingwood.tests
 import eden.martin.collingwood.*
 import org.testng.Assert
 import org.testng.annotations.BeforeMethod
-import org.testng.annotations.DataProvider
 import org.testng.annotations.Test
 
 class AttackTests {
@@ -36,5 +35,18 @@ class AttackTests {
         } else {
             Assert.fail("Expected r3 to be a SunkTargetReport")
         }
+    }
+
+    @Test
+    fun cannotHitShipSegmentTwice() {
+        var report : IReport
+
+        attack(Space(0, 0), board)
+        report = attack(Space(0, 0), board)
+        Assert.assertTrue(report is MissReport)
+
+        // We check again, to make sure the ship isn't sunk by the third hit
+        report = attack(Space(0, 0), board)
+        Assert.assertTrue(report is MissReport)
     }
 }

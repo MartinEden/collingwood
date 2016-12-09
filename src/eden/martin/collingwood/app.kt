@@ -3,6 +3,10 @@ package eden.martin.collingwood
 fun main(args : Array<String>) {
     val board = setupBoard()
     val player = ConsoleHumanPlayer()
+    playGame(board, player)
+}
+
+fun playGame(board : IGameBoard, player : IPlayer) {
     while (board.hasShips) {
         val target = player.chooseTarget(board)
         val report = attack(target, board)
@@ -12,7 +16,16 @@ fun main(args : Array<String>) {
 }
 
 fun attack(target: Space, board: IGameBoard): IReport {
-    throw UnsupportedOperationException("Not implemented")
+    val ship = board.get(target)
+    if (ship != null && ship.hit(target)) {
+        if (ship.sunk) {
+            return SunkTargetReport(ship)
+        } else {
+            return HitReport()
+        }
+    } else {
+        return MissReport()
+    }
 }
 
 fun setupBoard(): IMutableGameBoard {
