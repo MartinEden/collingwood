@@ -1,7 +1,8 @@
 package eden.martin.collingwood
 
-interface IAttackReport
+interface IReport
 
-class MissReport : IAttackReport
-open class HitReport : IAttackReport
+class MissReport : IReport
+open class HitReport : IReport
 class SunkTargetReport(val target : IShip) : HitReport()
+class VictoryReport : IReport
