@@ -12,9 +12,11 @@ interface IPlayer {
 }
 
 class ConsoleHumanPlayer(private val input : BufferedReader, private val output : Writer) : IPlayer {
-    constructor(): this(System.`in`.bufferedReader(), System.out.bufferedWriter())
+    constructor(): this(System.`in`.bufferedReader(), System.out.writer())
 
-    override fun inform(report: IReport) = output.write(representationFor(report) + "\n")
+    override fun inform(report: IReport) {
+        output.write(representationFor(report) + "\n"); output.flush()
+    }
 
     private fun representationFor(report : IReport) = when (report) {
         is VictoryReport -> "All ships destroyed. Victory!"
@@ -28,13 +30,13 @@ class ConsoleHumanPlayer(private val input : BufferedReader, private val output 
         val maxRange = format(Space(board.size - 1, board.size - 1))
 
         while (target == null) {
-            output.write("Please enter a target: ")
+            output.write("Please enter a target: "); output.flush()
             target = parse(input.readLine())
             if (target == null) {
-                output.write("That doesn't look quite right. You need something like A1, or C6, or E2.\n")
+                output.write("That doesn't look quite right. You need something like A1, or C6, or E2.\n"); output.flush()
             } else {
                 if (!board.inBounds(target)) {
-                    output.write("That target is outside the board. Please enter something in the range A0 up to $maxRange")
+                    output.write("That target is outside the board. Please enter something in the range A1 up to $maxRange\n"); output.flush()
                     target = null
                 }
             }
