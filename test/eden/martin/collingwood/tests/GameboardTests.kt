@@ -5,7 +5,7 @@ import org.testng.annotations.Test
 import org.mockito.Mockito.mock
 import org.mockito.Mockito.`when` as mockWhen
 import org.testng.Assert
-import org.testng.annotations.BeforeTest
+import org.testng.annotations.BeforeMethod
 import org.testng.annotations.DataProvider
 import org.testng.internal.junit.ArrayAsserts
 
@@ -13,7 +13,7 @@ class GameboardTests {
     val size = 3
     lateinit var board : IMutableGameBoard
 
-    @BeforeTest
+    @BeforeMethod
     fun createBoard() {
         board = GameBoard(size)
     }

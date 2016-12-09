@@ -33,7 +33,7 @@ class GameBoard(override val size: Int) : IMutableGameBoard {
     }
 
     override val hasShips: Boolean
-        get() = throw UnsupportedOperationException()
+        get() = allSpaces().any { val ship = get(it); ship != null && !ship.sunk }
 
     override fun inBounds(space: Space): Boolean {
         return space.x >= 0 && space.x < size
