@@ -9,7 +9,9 @@ interface IFleetPlacer {
     fun placeShips(fleet: Iterable<IShipTemplate>, board: IMutableGameBoard)
 }
 
-class RandomFleetPlacer : IFleetPlacer {
+class RandomFleetPlacer(private val randomSource: IRandomSource) : IFleetPlacer {
+    constructor(): this(JavaRandomSource())
+
     override fun placeShips(fleet: Iterable<IShipTemplate>, board: IMutableGameBoard) {
         for (ship in fleet) {
             placeShip(ship, board)
@@ -25,8 +27,7 @@ class RandomFleetPlacer : IFleetPlacer {
 
     private fun getPlacement(shipTemplate: IShipTemplate, board: IGameBoard): Placement {
         val candidates = allPlacements(board).filter { canPlace(shipTemplate, it, board) }
-        val index = Random().nextInt(candidates.count())
-        return candidates[index]
+        return randomSource.chooseFrom(candidates)
     }
 
     private fun canPlace(shipTemplate: IShipTemplate, placement: Placement, board: IGameBoard): Boolean {
