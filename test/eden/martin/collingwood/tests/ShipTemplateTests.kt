@@ -18,7 +18,7 @@ class ShipTemplateTests {
     }
 
     @DataProvider(name = "validArrangements")
-    fun validArangements(): Array<Array<Any>> = arrayOf(
+    fun validArrangements(): Array<Array<Any>> = arrayOf(
             // Each of these provides in order: An origin, a length, an orientation.
             // Finally, we describe the expected result of the test
             arrayOf(Space(0, 0), 3, Orientation.Horizontal, arrayOf(Space(0, 0), Space(1, 0), Space(2, 0))),
@@ -32,7 +32,7 @@ class ShipTemplateTests {
     fun makeShipCreatesShipWithMatchingName() {
         val template = ShipTemplate("Collingwood", 3)
         val ship = template.makeShip(Placement(Space(0, 0), Orientation.Horizontal))
-        Assert.assertEquals(template.name, ship.name)
+        Assert.assertEquals(ship.name, template.name)
     }
 
     @Test

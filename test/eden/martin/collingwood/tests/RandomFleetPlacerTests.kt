@@ -2,7 +2,6 @@ package eden.martin.collingwood.tests
 
 import eden.martin.collingwood.*
 import eden.martin.collingwood.tests.eden.martin.collingwood.tests.helpers.PredictableRandomSource
-import org.mockito.ArgumentMatchers
 import org.mockito.Mockito.*
 import org.mockito.Mockito.`when` as mockWhen
 import org.testng.Assert
@@ -62,10 +61,10 @@ class RandomFleetPlacerTests {
 
         // Correct number of non-empty squares
         val spaces = board.allSpaces().toList()
-        Assert.assertEquals(3 + 4 + 5, spaces.filter { board.get(it) != null }.count())
+        Assert.assertEquals(spaces.filter { board.get(it) != null }.count(), 3 + 4 + 5)
 
-        Assert.assertEquals(3, spaces.filter { board.get(it)?.name == "A" }.count())
-        Assert.assertEquals(4, spaces.filter { board.get(it)?.name == "B" }.count())
-        Assert.assertEquals(5, spaces.filter { board.get(it)?.name == "C" }.count())
+        Assert.assertEquals(spaces.filter { board.get(it)?.name == "A" }.count(), 3)
+        Assert.assertEquals(spaces.filter { board.get(it)?.name == "B" }.count(), 4)
+        Assert.assertEquals(spaces.filter { board.get(it)?.name == "C" }.count(), 5)
     }
 }

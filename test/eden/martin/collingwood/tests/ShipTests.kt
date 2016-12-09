@@ -10,7 +10,7 @@ class ShipTests {
     @Test
     fun canSetShipNameWhenConstructing() {
         val ship = Ship("Collingwood", listOf(Space(0, 0)))
-        Assert.assertEquals("Collingwood", ship.name)
+        Assert.assertEquals(ship.name, "Collingwood")
     }
 
     @Test

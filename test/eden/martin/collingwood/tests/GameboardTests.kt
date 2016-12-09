@@ -37,7 +37,7 @@ class GameboardTests {
         val ship = mock(IShip::class.java)
         val space = Space(2, 1)
         board.put(space, ship)
-        Assert.assertEquals(ship, board.get(space))
+        Assert.assertEquals(board.get(space), ship)
         assertBoardIsEmptyExcept(board, listOf(space))
     }
 

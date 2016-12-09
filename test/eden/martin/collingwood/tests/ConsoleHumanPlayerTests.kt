@@ -79,7 +79,7 @@ class ConsoleHumanPlayerTests {
     fun chooseTargetAsksForAnotherTargetIsThePlayerEntersSomethingInTheWrongFormat() {
         val player = createPlayer("Spinach\nB2")
         val target = player.chooseTarget(GameBoard(5))
-        // The first, invalid target has been ignored, and the second input - A1 - has been used
+        // The first, invalid target has been ignored, and the second input - B2 - has been used
         Assert.assertEquals(target, Space(1, 1))
     }
 }

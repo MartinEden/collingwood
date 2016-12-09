@@ -8,21 +8,21 @@ import org.testng.annotations.Test
 
 class VectorTests {
     @Test
-    fun HorizontalVectorOnlyHasXComponent() {
+    fun horizontalVectorOnlyHasXComponent() {
         val vector = Vector(Orientation.Horizontal)
-        Assert.assertEquals(Vector(1, 0), vector)
+        Assert.assertEquals(vector, Vector(1, 0))
     }
 
     @Test
-    fun VerticalVectorOnlyHasYComponent() {
+    fun verticalVectorOnlyHasYComponent() {
         val vector = Vector(Orientation.Vertical)
-        Assert.assertEquals(Vector(0, 1), vector)
+        Assert.assertEquals(vector, Vector(0, 1))
     }
 
     @Test
-    fun CanAddVectorToSpace() {
+    fun canAddVectorToSpace() {
         val vector = Vector(6, 4)
         val space = Space(2, 2)
-        Assert.assertEquals(Space(8, 6), space + vector)
+        Assert.assertEquals(space + vector, Space(8, 6))
     }
 }
