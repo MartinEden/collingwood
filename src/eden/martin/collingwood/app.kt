@@ -29,7 +29,7 @@ fun attack(target: Space, board: IGameBoard): IReport {
 }
 
 fun setupBoard(): IMutableGameBoard {
-    val board = GameBoard(10)
+    val board = GameBoard(6)
     val fleet = listOf(
             ShipTemplate("Battleship", 5),
             ShipTemplate("Destroyer", 4),
