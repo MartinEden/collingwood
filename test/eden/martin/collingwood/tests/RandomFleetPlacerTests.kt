@@ -38,11 +38,17 @@ class RandomFleetPlacerTests {
     @Test
     fun fleetPlacerAsksTemplateToMakeShip() {
         val template = mock(IShipTemplate::class.java)
-        val spaces = listOf(Space(0, 0))
-        mockWhen(template.spacesRequired(Orientation.Horizontal, Space(0, 0))).then { spaces }
-        mockWhen(template.spacesRequired(Orientation.Vertical, Space(0, 0))).then { spaces }
+        val ship = Ship("Test", emptyList<Space>())
+        val expectedPlacement = Placement(Space(0, 0), Orientation.Horizontal)
+
+        // This strange ship takes up more space vertically then horizontally - this is to make sure the random
+        // placer places it horizontally
+        mockWhen(template.spacesRequired(expectedPlacement)).then { listOf(Space(0, 0)) }
+        mockWhen(template.spacesRequired(Placement(Space(0, 0), Orientation.Vertical))).then { listOf(Space(0, 0), Space(0, 1)) }
+
+        mockWhen(template.makeShip(expectedPlacement)).then { ship }
         RandomFleetPlacer().placeShips(listOf(template), GameBoard(1))
-        verify(template).makeShip(any(Orientation::class.java),  any(Space::class.java))
+        verify(template).makeShip(expectedPlacement)
     }
 
     @Test

@@ -1,6 +1,7 @@
 package eden.martin.collingwood.tests
 
 import eden.martin.collingwood.Orientation
+import eden.martin.collingwood.Placement
 import eden.martin.collingwood.ShipTemplate
 import eden.martin.collingwood.Space
 import org.testng.Assert
@@ -12,7 +13,7 @@ class ShipTemplateTests {
     @Test(dataProvider = "validArrangements")
     fun correctSpacesAreRequired(origin: Space, length: Int, orientation: Orientation, expectedSpaces: Array<Space>) {
         val template = ShipTemplate("Name", length)
-        val spaces = template.spacesRequired(orientation, origin)
+        val spaces = template.spacesRequired(Placement(origin, orientation))
         ArrayAsserts.assertArrayEquals(expectedSpaces, spaces.toTypedArray())
     }
 
@@ -30,15 +31,15 @@ class ShipTemplateTests {
     @Test
     fun makeShipCreatesShipWithMatchingName() {
         val template = ShipTemplate("Collingwood", 3)
-        val ship = template.makeShip(Orientation.Horizontal, Space(0, 0))
+        val ship = template.makeShip(Placement(Space(0, 0), Orientation.Horizontal))
         Assert.assertEquals(template.name, ship.name)
     }
 
     @Test
     fun makeShipCreatesShipWithMatchingSpaces() {
         val template = ShipTemplate("Collingwood", 3)
-        val expectedSpaces = template.spacesRequired(Orientation.Vertical, Space(1, 2))
-        val ship = template.makeShip(Orientation.Vertical, Space(1, 2))
+        val expectedSpaces = template.spacesRequired(Placement(Space(1, 2), Orientation.Vertical))
+        val ship = template.makeShip(Placement(Space(1, 2), Orientation.Vertical))
         ArrayAsserts.assertArrayEquals(expectedSpaces.toTypedArray(), ship.spaces.toList().toTypedArray())
     }
 }

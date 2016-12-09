@@ -7,15 +7,15 @@ package eden.martin.collingwood
 interface IShipTemplate {
     val name: String
     val length: Int
-    fun makeShip(orientation: Orientation, origin: Space): IShip
-    fun spacesRequired(orientation: Orientation, origin: Space): Collection<Space>
+    fun makeShip(placement: Placement): IShip
+    fun spacesRequired(placement: Placement): Collection<Space>
 }
 
 class ShipTemplate(override val name: String, override val length: Int) : IShipTemplate {
-    override fun spacesRequired(orientation: Orientation, origin: Space): Collection<Space> {
-        val vector = Vector(orientation)
+    override fun spacesRequired(placement: Placement): Collection<Space> {
+        val vector = Vector(placement.orientation)
         val spaces = mutableListOf<Space>()
-        var current = origin
+        var current = placement.origin
         for (i in 1..length) {
             spaces.add(current)
             current = current.plus(vector)
@@ -23,8 +23,8 @@ class ShipTemplate(override val name: String, override val length: Int) : IShipT
         return spaces
     }
 
-    override fun makeShip(orientation: Orientation, origin: Space): IShip {
-        return Ship(name, spacesRequired(orientation, origin))
+    override fun makeShip(placement: Placement): IShip {
+        return Ship(name, spacesRequired(placement))
     }
 }
 

@@ -11,6 +11,7 @@ interface IGameBoard {
     val size: Int
     fun get(space: Space): IShip?
     fun allSpaces(): Sequence<Space>
+    fun inBounds(space: Space): Boolean
 }
 
 /**
@@ -28,6 +29,11 @@ class GameBoard(override val size: Int) : IMutableGameBoard {
     override fun get(space: Space): IShip? = grid[space.x][space.y]
     override fun put(space: Space, ship: IShip) {
         grid[space.x][space.y] = ship
+    }
+
+    override fun inBounds(space: Space): Boolean {
+        return space.x >= 0 && space.x < size
+            && space.y >= 0 && space.y < size
     }
 
     override fun allSpaces(): Sequence<Space> {

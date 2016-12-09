@@ -11,22 +11,12 @@ import org.testng.annotations.DataProvider
 import org.testng.internal.junit.ArrayAsserts
 
 class GameboardTests {
-    val size = 4
+    val size = 3
 
     @Test
     fun allSpacesReturnsEverySpace() {
         val board = GameBoard(3)
-        val expectedSpaces = sequenceOf(
-                Space(0, 0),
-                Space(1, 0),
-                Space(2, 0),
-                Space(0, 1),
-                Space(1, 1),
-                Space(2, 1),
-                Space(0, 2),
-                Space(1, 2),
-                Space(2, 2)
-        )
+        val expectedSpaces = inBoundsSpaces()
         ArrayAsserts.assertArrayEquals(expectedSpaces.toList().toTypedArray(),
                                        board.allSpaces().toList().toTypedArray())
     }
@@ -49,17 +39,6 @@ class GameboardTests {
         assertBoardIsEmptyExcept(board, listOf(space))
     }
 
-    @DataProvider(name = "outOfBounds")
-    fun outOfBoundsSpaces(): Array<Array<Any>> {
-        val spaces = listOf(
-                Space(-1, 0),
-                Space(0, -1),
-                Space(size, 0),
-                Space(0, size)
-        )
-        return spaces.map { arrayOf<Any>(it) }.toTypedArray()
-    }
-
     @Test(dataProvider = "outOfBounds")
     fun cannotPutShipBeyondRangeOfBoard(space: Space) {
         val board = GameBoard(size)
@@ -72,9 +51,48 @@ class GameboardTests {
         Assert.assertThrows { board.get(space) }
     }
 
+    @Test(dataProvider = "outOfBounds")
+    fun inBoundsReturnsFalseForIndicesOutsideOfBounds(space: Space) {
+        val board = GameBoard(size)
+        Assert.assertFalse(board.inBounds(space))
+    }
+
+    @Test(dataProvider = "inBounds")
+    fun inBoundsReturnsTrueForIndicesInsideOfBounds(space: Space) {
+        val board = GameBoard(size)
+        Assert.assertTrue(board.inBounds(space))
+    }
+
     private fun assertBoardIsEmptyExcept(board : IGameBoard, exceptions : Iterable<Space>) {
         for (space in board.allSpaces().filter { it !in exceptions }) {
             Assert.assertNull(board.get(space))
         }
     }
+
+    @DataProvider(name = "outOfBounds")
+    fun outOfBoundsSpacesDataProvider(): Array<Array<Any>> {
+        val spaces = listOf(
+                Space(-1, 0),
+                Space(0, -1),
+                Space(size, 0),
+                Space(0, size)
+        )
+        return spaces.map { arrayOf<Any>(it) }.toTypedArray()
+    }
+
+    @DataProvider(name = "inBounds")
+    fun inBoundsSpacesDataProvider(): Array<Array<Any>> {
+        return inBoundsSpaces().map { arrayOf<Any>(it) }.toList().toTypedArray()
+    }
+    fun inBoundsSpaces(): Sequence<Space> = sequenceOf(
+            Space(0, 0),
+            Space(1, 0),
+            Space(2, 0),
+            Space(0, 1),
+            Space(1, 1),
+            Space(2, 1),
+            Space(0, 2),
+            Space(1, 2),
+            Space(2, 2)
+    )
 }
