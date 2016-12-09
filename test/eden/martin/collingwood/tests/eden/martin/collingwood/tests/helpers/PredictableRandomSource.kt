@@ -1,4 +1,4 @@
-package eden.martin.collingwood.tests
+package eden.martin.collingwood.tests.eden.martin.collingwood.tests.helpers
 
 import eden.martin.collingwood.IRandomSource
 

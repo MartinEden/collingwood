@@ -1,7 +1,5 @@
 package eden.martin.collingwood
 
-import java.util.*
-
 /**
  * Sets up the board at the beginning of the game from a given stock of ships
  */
@@ -9,7 +7,20 @@ interface IFleetPlacer {
     fun placeShips(fleet: Iterable<IShipTemplate>, board: IMutableGameBoard)
 }
 
-class RandomFleetPlacer(private val randomSource: IRandomSource) : IFleetPlacer {
+abstract class FleetPlacerBase {
+    protected fun placeShip(shipTemplate: IShipTemplate, board: IMutableGameBoard, placement: Placement) {
+        val ship = shipTemplate.makeShip(placement)
+        for (space in ship.spaces) {
+            board.put(space, ship)
+        }
+    }
+
+    protected fun canPlace(shipTemplate: IShipTemplate, placement: Placement, board: IGameBoard): Boolean {
+        return shipTemplate.spacesRequired(placement).all { board.inBounds(it) && board.get(it) == null }
+    }
+}
+
+open class RandomFleetPlacer(private val randomSource: IRandomSource) : FleetPlacerBase(), IFleetPlacer {
     constructor(): this(JavaRandomSource())
 
     override fun placeShips(fleet: Iterable<IShipTemplate>, board: IMutableGameBoard) {
@@ -19,10 +30,7 @@ class RandomFleetPlacer(private val randomSource: IRandomSource) : IFleetPlacer 
     }
 
     private fun placeShip(shipTemplate: IShipTemplate, board: IMutableGameBoard) {
-        val ship = shipTemplate.makeShip(getPlacement(shipTemplate, board))
-        for (space in ship.spaces) {
-            board.put(space, ship)
-        }
+        placeShip(shipTemplate, board, getPlacement(shipTemplate, board))
     }
 
     private fun getPlacement(shipTemplate: IShipTemplate, board: IGameBoard): Placement {
@@ -30,13 +38,9 @@ class RandomFleetPlacer(private val randomSource: IRandomSource) : IFleetPlacer 
         return randomSource.chooseFrom(candidates)
     }
 
-    private fun canPlace(shipTemplate: IShipTemplate, placement: Placement, board: IGameBoard): Boolean {
-        return shipTemplate.spacesRequired(placement).all { board.inBounds(it) && board.get(it) == null }
-    }
-
     private fun allPlacements(board: IGameBoard): Collection<Placement> {
         // every square combined with every orientation
-        return board.allSpaces().flatMap  {
+        return board.allSpaces().flatMap {
             sequenceOf(
                     Placement(it, Orientation.Horizontal),
                     Placement(it, Orientation.Vertical)

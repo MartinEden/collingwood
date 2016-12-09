@@ -1,6 +1,7 @@
 package eden.martin.collingwood.tests
 
 import eden.martin.collingwood.*
+import eden.martin.collingwood.tests.eden.martin.collingwood.tests.helpers.PredictableFleetPlacer
 import org.testng.Assert
 import org.testng.annotations.BeforeMethod
 import org.testng.annotations.Test
@@ -10,11 +11,10 @@ class AttackTests {
 
     @BeforeMethod
     fun setupBoard() {
-        // We know that the placer will put the ship at (0,0) with a horizontal orientation,
-        // so it will occupy (0,0), (1,0), and (2,0)
         board = GameBoard(5)
-        val placer = RandomFleetPlacer(PredictableRandomSource())
-        placer.placeShips(listOf(ShipTemplate("Collingwood", 3)), board)
+        val placer = PredictableFleetPlacer()
+        placer.placeShip(ShipTemplate("Collingwood", 3), board, Placement(Space(0,0), Orientation.Horizontal))
+        // So the ship occupies (0,0), (1,0), and (2,0)
     }
 
     @Test
