@@ -8,13 +8,16 @@ import java.io.Writer
  */
 interface IPlayer {
     fun chooseTarget(board: IGameBoard): Space
-    fun inform(report: IAttackReport)
+    fun inform(report: IReport)
 }
 
 class ConsoleHumanPlayer(private val input : BufferedReader, private val output : Writer) : IPlayer {
-    override fun inform(report: IAttackReport) = output.write(representationFor(report) + "\n")
+    constructor(): this(System.`in`.bufferedReader(), System.out.bufferedWriter())
 
-    private fun representationFor(report : IAttackReport) = when (report) {
+    override fun inform(report: IReport) = output.write(representationFor(report) + "\n")
+
+    private fun representationFor(report : IReport) = when (report) {
+        is VictoryReport -> "All ships destroyed. Victory!"
         is SunkTargetReport -> "Hit, and sunk a ${report.target.name}!"
         is HitReport -> "Hit"
         else -> "Miss"
