@@ -4,4 +4,4 @@ interface IAttackReport
 
 class MissReport : IAttackReport
 open class HitReport : IAttackReport
-class SunkTargetReport(target : IShip) : HitReport()
+class SunkTargetReport(val target : IShip) : HitReport()
